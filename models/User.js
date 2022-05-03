@@ -1,9 +1,8 @@
-import { isEmail } from 'validator';
-
 const { Schema, model } = require('mongoose');
 const thoughtSchema = require('./Thought');
 
-// Schema to create Student model
+import { isEmail } from 'validator';
+
 const userSchema = new Schema(
   {
     username: {
@@ -34,6 +33,7 @@ const userSchema = new Schema(
   {
     toJSON: {
       getters: true,
+      virtuals: true
     },
   }
 );
@@ -44,10 +44,11 @@ userSchema
   .get(function () {
     return `${this.friends.length}`;
   })
-  .set(function (v) {
+/*   .set(function (v) {
     this.set(v)
-  });
+  }) */
+  ;
 
-const Student = model('user', userSchema);
+const User = model('user', userSchema);
 
-module.exports = Student;
+module.exports = User;
