@@ -4,7 +4,7 @@ const { User, Thought } = require('../models');
 // Get all thoughts.
 // Get all users.
 function getThoughts(req, res) {
-  Thought.find()
+  Thought.find({})
     .then((thoughts) => {
       return res.json(thoughts);
     })
@@ -88,11 +88,39 @@ function deleteThought(req, res) {
 // 
 
 // Post to create a reaction stored in a single thought's 'reactions' array field.
-
+function addReaction(req, res) {
+  Thought.findOneAndUpdate(
+      {_id: req.params.thoughtId},
+      {$push: {reactions: req.body}},
+      { new: true, runValidators: true }
+  )
+  .then(reaction => {
+      if (!reaction) {
+          res.status(404).json({ message: 'Nope! Reaction data NOT saved.' });
+          return;
+      }
+      res.json(reaction);
+  })
+  .catch(err => res.json(err));
+};
 
 
 // Delete to pull and remove a reaction by the reaction's 'reactionId" value
-
+function deleteReaction(req, res) {
+  Thought.findOneAndUpdate(
+    { _id: req.params.reactionId },
+    { $pull: { reactions: { reactionsId: req.params.reactionId } } },
+    { runValidators: true, new: true }
+  )
+    .then((reaction) =>
+      !reaction
+        ? res
+            .status(404)
+            .json({ message: 'No reaction found with that ID.' })
+        : res.json({ message: 'Reaction was successfully deleted.' })
+    )
+    .catch((err) => res.status(500).json(err));
+};
 
 
 
@@ -101,5 +129,7 @@ module.exports = {
   getSingleThought,
   createThought,
   updateThought,
-  deleteThought
+  deleteThought,
+  addReaction,
+  deleteReaction
 };

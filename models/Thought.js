@@ -69,6 +69,6 @@ thoughtSchema
   ;
 
 
-const Thought = model('thought', thoughtSchema);
+const Thought = model('Thought', thoughtSchema);
 
-module.exports = Thought;
+module.exports = Thought, reactionSchema;
