@@ -3,8 +3,8 @@ const { User, Thought } = require('../models');
 
 const headCount = async () =>
   User.aggregate()
-    .count('userCount')
-    .then((numberOfUsers) => numberOfUsers);
+    .count('userCount');
+    // .then((numberOfUsers) => numberOfUsers);
 
 const getFriends = async (userId) =>
   User.aggregate([
@@ -95,14 +95,14 @@ function deleteUser(req, res) {
 // Update a user.
 function updateUser(req, res) {
   User.findOneAndUpdate(
-    { _id: req.params.courseId },
+    { _id: req.params.userId },
     { $set: req.body },
     { runValidators: true, new: true }
   )
     .then((user) =>
       !user
         ? res.status(404).json({ message: 'No user with this id!' })
-        : res.json(course)
+        : res.json(user)
     )
     .catch((err) => res.status(500).json(err));
 };
@@ -114,7 +114,7 @@ function addFriend(req, res) {
   console.log(req.body);
   User.findOneAndUpdate(
     { _id: req.params.userId },
-    { $addToSet: { friends: req.body.friendId } },
+    { $addToSet: { friends: req.params.friendId } },
     { runValidators: true, new: true }
     )
     .then((user) =>
@@ -132,7 +132,7 @@ function addFriend(req, res) {
 function removeFriend(req, res) {
   User.findOneAndUpdate(
     { _id: req.params.userId },
-    { $pull: { friends: { _id: req.body.friendId } } },
+    { $pull: { friends: req.params.friendId } },
     { runValidators: true, new: true }
   )
     .then((user) =>
