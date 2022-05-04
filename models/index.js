@@ -1,5 +1,6 @@
 const User = require('./User');
 const Thought = require('./Thought');
-// const Reaction = require('./Reaction');
 
-module.exports = { User, Thought };
+// import { isEmail } from 'validator';
+
+module.exports = { User, Thought};

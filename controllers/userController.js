@@ -20,7 +20,7 @@ const getThoughts = async (userId) =>
 
 
 // Get all users.
-function getStudents(req, res) {
+function getUsers(req, res) {
   User.find()
     .then(async (users) => {
       const userObj = {
@@ -43,7 +43,7 @@ function createUser(req, res) {
 };
 
 // Get a single user.
-function getSingleStudent(req, res) {
+function getSingleUser(req, res) {
   User.findOne({ _id: req.params.userId })
     .select('-__v')
     .then(async (user) =>
@@ -143,4 +143,15 @@ function removeFriend(req, res) {
         : res.json(user)
     )
     .catch((err) => res.status(500).json(err));
+};
+
+
+module.exports = {
+  getUsers,
+  createUser,
+  getSingleUser,
+  deleteUser,
+  updateUser,
+  addFriend,
+  removeFriend
 };
