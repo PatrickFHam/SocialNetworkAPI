@@ -1,7 +1,7 @@
 const connection = require('../config/connection');
 const { User, Thought } = require('../models');
-const users = require('./data');
-const thoughts = require('./data');
+const users = require('./userData');
+const thoughts = require('./thoughtData');
 
 connection.on('error', (err) => err);
 
@@ -22,6 +22,7 @@ connection.once('open', async () => {
 
   // Log out the seed data to indicate what should appear in the database
   console.table(users);
+  console.table(thoughts);
   console.info('Seeding complete! 🌱');
   process.exit(0);
 });

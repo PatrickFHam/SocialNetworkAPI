@@ -1,10 +1,10 @@
 const { ObjectId } = require('mongoose').Types;
 const { User, Thought } = require('../models');
 
+
 // Get all thoughts.
-// Get all users.
 function getThoughts(req, res) {
-  Thought.find({})
+  Thought.find()
     .then((thoughts) => {
       return res.json(thoughts);
     })
