@@ -1,4 +1,5 @@
 const { Schema, Types } = require('mongoose');
+const moment = require('moment');
 
 const reactionSchema = new Schema(
   {
@@ -9,7 +10,7 @@ const reactionSchema = new Schema(
     reactionBody: {
       type: String,
       required: true,
-      max_length: 280
+      maxLength: 280
     },
     username: {
       type: String,
@@ -26,6 +27,7 @@ const reactionSchema = new Schema(
       getters: true
     },
     timestamps: true,
+    id: false
   }
 );
 

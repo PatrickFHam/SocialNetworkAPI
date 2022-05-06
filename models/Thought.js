@@ -8,7 +8,8 @@ const thoughtSchema = new Schema(
     thoughtText: {
       type: String,
       required: true,
-      max_length: 200
+      minLength: 1,
+      maxLength: 280
     },
     createdAt: {
       type: Date,
@@ -17,7 +18,8 @@ const thoughtSchema = new Schema(
     },
     username: {
       type: String,
-      required: true
+      required: true,
+      ref: 'User'
     },
     reactions: [reactionSchema],
   },
@@ -26,7 +28,8 @@ const thoughtSchema = new Schema(
       getters: true,
       virtuals: true
     },
-    timestamps: true
+    timestamps: true,
+    id: false
   }
 );
 
@@ -35,9 +38,9 @@ thoughtSchema
   .get(function () {
     return this.reactions.length;
   })
-/*   .set(function (v) {
+  .set(function (v) {
     this.set(v)
-  }) */
+  })
   ;
 
 

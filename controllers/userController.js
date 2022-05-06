@@ -6,7 +6,7 @@ const headCount = async () =>
     .count('userCount');
     // .then((numberOfUsers) => numberOfUsers);
 
-const getFriends = async (userId) =>
+/* const getFriends = async (userId) =>
   User.aggregate([
     { $match: { _id: ObjectId(userId) }},
     { $unwind: '$friends' }
@@ -17,11 +17,11 @@ const getThoughts = async (userId) =>
     { $match: { _id: ObjectId(userId) }},
     { $unwind: '$thoughts' }
   ]);
-
+ */
 
 // Get all users.
 function getUsers(req, res) {
-  User.find()
+  User.find({})
     .then(async (users) => {
       const userObj = {
         users,
@@ -45,15 +45,10 @@ function createUser(req, res) {
 // Get a single user.
 function getSingleUser(req, res) {
   User.findOne({ _id: req.params.userId })
-    .select('-__v')
     .then(async (user) =>
       !user
         ? res.status(404).json({ message: 'No user found with that ID.' })
-        : res.json({
-            user,
-            friends: await getFriends(req.params.userId),
-            thoughts: await getThoughts(req.params.userId)
-          })
+        : res.json(user)
     )
     .catch((err) => {
       console.log(err);
