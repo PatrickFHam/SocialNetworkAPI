@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
+// list of functions from the user controller
 const {
-  // list of functions from the user controller
   getUsers,
   createUser,
   getSingleUser,
@@ -11,6 +11,8 @@ const {
   removeFriend
 } = require('../../controllers/userController');
 
+
+// functions being called with specific routes and methods
 router.route('/')
   .get(getUsers)
   .post(createUser);

@@ -1,23 +1,11 @@
 const { ObjectId } = require('mongoose').Types;
 const { User, Thought } = require('../models');
 
+// Helper-function to provide a headcount. (Used in the function called 'getUsers'.)
 const headCount = async () =>
   User.aggregate()
     .count('userCount');
-    // .then((numberOfUsers) => numberOfUsers);
 
-/* const getFriends = async (userId) =>
-  User.aggregate([
-    { $match: { _id: ObjectId(userId) }},
-    { $unwind: '$friends' }
-  ]); 
-
-const getThoughts = async (userId) =>
-  User.aggregate([
-    { $match: { _id: ObjectId(userId) }},
-    { $unwind: '$thoughts' }
-  ]);
- */
 
 // Get all users.
 function getUsers(req, res) {
@@ -56,19 +44,18 @@ function getSingleUser(req, res) {
     });
 };
 
-// Delete a user.
+// Delete a user.... AND THE BONUS TO DELETE ASSOCIATED THOUGHTS
 function deleteUser(req, res) {
   let userUID = req.params.userId;
   let pulledUsername = () => {
     User.findOne({ _id: userUID }, 'username').exec();
   }
-
-  console.log(`Pulled Username is ${pulledUsername}`);
   
   User.findOneAndRemove({ _id: req.params.userId })
     .then((user) =>
       !user
         ? res.status(404).json({ message: 'No such user exists.' })
+        // THIS IS THE BONUS!!!!!  This will delete all the thoughts associated with that deleted user.
         : Thought.deleteMany(
             { username: pulledUsername },
             { new: true }
@@ -141,6 +128,7 @@ function removeFriend(req, res) {
 };
 
 
+// Making these functions usable in the api routes.
 module.exports = {
   getUsers,
   createUser,

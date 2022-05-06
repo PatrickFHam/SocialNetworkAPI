@@ -130,7 +130,7 @@ function deleteReaction(req, res) {
 };
 
 
-
+// Making these functions usable in the api routes.
 module.exports = {
   getThoughts,
   getSingleThought,
